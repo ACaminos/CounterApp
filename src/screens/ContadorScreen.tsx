@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { Fab } from '../components/Fab';
 
 export const ContadorScreen = () => {
     const [contador, setcontador] = useState(10)
@@ -7,14 +8,20 @@ export const ContadorScreen = () => {
     <View style={styles.container}>
         <Text style={styles.title}>Contador : {contador}</Text>
 
-        <TouchableOpacity
-            style={styles.fabLocationBR}
-            onPress= { () => setcontador(contador+1)}
+        <Fab
+            title="+1"
+        />
+
+
+
+        {/* <TouchableOpacity
+            style={styles.fabLocationBL}
+            onPress= { () => setcontador(contador-1)}
             >
                 <View style={styles.fab}>
-                    <Text style={styles.fabText}>+1</Text>
+                    <Text style={styles.fabText}>-1</Text>
                 </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
     </View>
   )
@@ -29,23 +36,5 @@ const styles = StyleSheet.create({
         textAlign:'center',
         fontSize:40,
         marginBottom:30
-    },
-    fabLocationBR:{
-        position:'absolute',
-        bottom:25,
-        right:25
-    },
-    fab:{
-        backgroundColor:'#5856d6',
-        width:60,
-        height:60,
-        borderRadius:100,
-        justifyContent:'center'
-    },
-    fabText:{
-        color: 'white',
-        fontSize:25,
-        fontWeight:'bold',
-        alignSelf:'center'
     }
 })

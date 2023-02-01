@@ -1,34 +1,53 @@
 import React from 'react'
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native'
+import { TouchableOpacity, View, Text, StyleSheet, TouchableNativeFeedback, Platform } from 'react-native'
 
 interface Props{
-    title: string
+    title: string;
+    onPress: () => void;
+    position?:'br' | 'bl'; //El signo de interrogacion permite que sea opcional, caso contrario tira un error el cual exige que se use el position y el br o el bl.
 }
 
-export const Fab = ({title}:Props) => {
-  return (
-        <TouchableOpacity
-        style={styles.fabLocationBR}
-        // onPress= { () => setcontador(contador+1)}
-        onPress= { () => console.log('Click')}
+export const Fab = ({title, onPress, position = 'br'}:Props) => {
+    const ios = () => {
+        return(
+            <TouchableOpacity
+                onPress={ onPress }
+                activeOpacity={ 0.8 }
+                style={[
+                    styles.fabLocation, (position === 'bl') ? styles.left : styles.right
+                ]}>
+                    <View style={ styles.fab }>
+                        <Text style={ styles.fabText }>{ title }</Text>
+                    </View>
+            </TouchableOpacity>
+        )
+    }
 
-        >
-            <View style={styles.fab}>
-                <Text style={styles.fabText}>{title}</Text>
+    const android = () => {
+        return(
+            <View style={[styles.fabLocation, (position === 'bl') ? styles.left : styles.right]}>
+                <TouchableNativeFeedback
+                    onPress={ onPress }
+                    background={ TouchableNativeFeedback.Ripple('#28425B',false, 30) }>
+                        <View style={styles.fab}>
+                            <Text style={ styles.fabText }>{ title }</Text>
+                        </View>
+                </TouchableNativeFeedback>
             </View>
-        </TouchableOpacity>
-  )
+        )
+    }
+  return (Platform.OS === 'ios') ? ios() : android()
 }
 
 const styles = StyleSheet.create({
-    fabLocationBR:{
+    fabLocation:{
         position:'absolute',
-        bottom:25,
+        bottom:20,
+    },
+    right:{
         right:25
     },
-    fabLocationBL:{
-        position:'absolute',
-        bottom:25,
+    left:{
         left:25
     },
     fab:{
@@ -36,7 +55,15 @@ const styles = StyleSheet.create({
         width:60,
         height:60,
         borderRadius:100,
-        justifyContent:'center'
+        justifyContent:'center',
+        shadowColor: "#000",
+        shadowOffset:{
+            width:0,
+            height:4
+        },
+        shadowOpacity: 0.30,
+        shadowRadius:4.65,
+        elevation:8,
     },
     fabText:{
         color: 'white',
